@@ -1,0 +1,5 @@
+.venv/
+test.jsonl
+train.jsonl
+validation.jsonl
+__pycache__/
