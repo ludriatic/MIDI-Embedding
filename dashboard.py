@@ -52,7 +52,7 @@ def plot_custom_pianoroll(notes_first, notes_second):
         title="Piano Roll Visualization"
     ).interactive()
 
-    st.altair_chart(chart, use_container_width=True)
+    st.altair_chart(chart, width='stretch')
 
 
 def main():
@@ -69,29 +69,29 @@ def main():
         st.sidebar.info(f"File: `{selected_file}`")
         st.sidebar.write(f"Records: **{reader.total_lines}**")
 
-        if 'chunk_idx' not in st.session_state:
-            st.session_state.chunk_idx = 0
+        if 'record_idx' not in st.session_state:
+            st.session_state.record_idx = 0
 
         col_prev, col_curr, col_next = st.sidebar.columns([1, 2, 1])
         
         if col_prev.button("◀ Prev"):
-            st.session_state.chunk_idx = max(0, st.session_state.chunk_idx - 1)
+            st.session_state.record_idx = max(0, st.session_state.record_idx - 1)
         if col_next.button("Next ▶"):
-            st.session_state.chunk_idx = min(reader.total_lines - 1, st.session_state.chunk_idx + 1)
+            st.session_state.record_idx = min(reader.total_lines - 1, st.session_state.record_idx + 1)
             
 
-        chunk_idx = st.sidebar.number_input(
+        record_idx = st.sidebar.number_input(
             "Go to index:", 
             min_value=0, 
             max_value=reader.total_lines - 1,
-            value=st.session_state.chunk_idx
+            value=st.session_state.record_idx
         )
-        st.session_state.chunk_idx = chunk_idx
+        st.session_state.record_idx = record_idx
 
-        sample = reader.get_sample(st.session_state.chunk_idx)
+        sample = reader.get_sample(st.session_state.record_idx)
         
         if sample:
-            st.subheader(f"Chunk #{st.session_state.chunk_idx}")
+            st.subheader(f"Record #{st.session_state.record_idx}")
             
             m = sample['metadata']
             c1, c2, c3 = st.columns(3)
